@@ -4,7 +4,7 @@ neNo = (input('Vai pie tevis atrodas laikā nenodots izdevums?\n')) #pirmais jau
 if neNo == 'Jā':
     print('Nevari saņemt izdevumu.')
 elif neNo == 'Nē':
-    piepIzd = (input('Vai izdevums ir pieprasīto izdevumu sarakstā, parasta grāmata vai žurnāls?\n')) #otrais jautājums, no tā atkarīgs dienu skaits
+    piepIzd = (input('Vai izdevums ir pieprasīto izdevumu sarakstā, parasta grāmata vai žurnāls?\n')) #otrais jautājums, no tā atkarīgs dienu skaits izdevumiem, kas nav parastas grāmatas
     if piepIzd == 'Žurnāls':
         print('Vari saņemt izdevumu uz 7 dienām.')
     if piepIzd == 'Pieprasīto izdevumu sarakstā':
