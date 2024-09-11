@@ -43,7 +43,7 @@ def nobeigums():
                 time.sleep(0.5) 
                 print("Programma beidzas...")
                 time.sleep(0.8)
-                print("Programma beigusies. Paldies! 👋")
+                print("Programma beigusies. Paldies!")
                 quit() 
             elif turpinat == 'j':
                 break
