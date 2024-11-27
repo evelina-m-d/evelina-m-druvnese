@@ -1,0 +1,2 @@
+A   A   16   8
+Anna   Bērziņa   15   3
