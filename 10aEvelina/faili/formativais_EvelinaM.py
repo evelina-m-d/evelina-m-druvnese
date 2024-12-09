@@ -8,6 +8,16 @@ atzime_skaits = 0
 def ir_vards(vards): #funkcija vārda satura pārbaudīšanai
     global vards_skaits 
 
+    if vards == 'stop' or vards == 'STOP':
+        print("Izvade tiek pārtraukta.")
+        time.sleep(0.5)
+        print("Izvade tiek pārtraukta..") #glīti izprintē programmas beigas
+        time.sleep(0.5)
+        print("Izvade tiek pārtraukta...")
+        time.sleep(0.8)
+        print("Programma Beigusies.")
+        quit()
+
     if not vards.isalpha():
         print("Kļūda. Vārdā un uzvārdā drīkst būt tikai burti.")
         vards_skaits += 1
@@ -19,6 +29,16 @@ def ir_vards(vards): #funkcija vārda satura pārbaudīšanai
 
 def ir_vecums(vecums): #funkcija vecuma pārbaudīšanai
     global vecums_skaits
+
+    if vecums == 'stop' or vecums == 'STOP':
+        print("Izvade tiek pārtraukta.")
+        time.sleep(0.5)
+        print("Izvade tiek pārtraukta..") #glīti izprintē programmas beigas
+        time.sleep(0.5)
+        print("Izvade tiek pārtraukta...")
+        time.sleep(0.8)
+        print("Programma Beigusies.")
+        quit()
 
     if not vecums.isdigit():
         print("Kļūda. Vecumam jābūt veselam skaitlim.")
@@ -38,6 +58,16 @@ def ir_vecums(vecums): #funkcija vecuma pārbaudīšanai
 
 def ir_atzime(atzime): #funkcija atzīmju pārbaudīšanai
     global atzime_skaits
+
+    if atzime == 'stop' or atzime == 'STOP':
+        print("Izvade tiek pārtraukta.")
+        time.sleep(0.5)
+        print("Izvade tiek pārtraukta..") #glīti izprintē programmas beigas
+        time.sleep(0.5)
+        print("Izvade tiek pārtraukta...")
+        time.sleep(0.8)
+        print("Programma Beigusies.")
+        quit()
 
     if not atzime.isdigit():
         print("Kļūda. Atzīmei jābūt veselam skaitlim.")
@@ -90,7 +120,7 @@ def ievade(faila_nosaukums): #funkcija kurā lietotājs ievada datus un tie tiek
                     break
             
             file.write(f"{vards}   {uzvards}   {vecums}   {atzime}\n")
-            print("Dati pievienoti.")
+            print("Dati saglabāti failā: kontroldarbs.txt")
     except Exception as e:
         print(f"Kļūda, saglabājot datus failā: {e}")
 
