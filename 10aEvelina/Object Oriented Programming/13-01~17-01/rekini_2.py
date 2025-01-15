@@ -19,7 +19,7 @@ class Rekins:
         self.materials = materials
 
         velt_garums = len(veltijums)
-        self.merijumi = [int(i) for i in izmers.split()] 
+        merijumi = [int(i) for i in izmers.split()] 
 
         izmeri = f"{self.merijumi[-3]}cm x {self.merijumi[-2]}cm x {self.merijumi[-1]}cm"
 
@@ -32,7 +32,6 @@ class Rekins:
         return produkta_cena, PVN_summa, rekina_summa, izmeri
 
     def saglabat(self, klients, veltijums, izmers, materials):
-
         self.klients = klients
         self.veltijums = veltijums
         self.izmers = izmers
