@@ -26,6 +26,30 @@ class Rekins:
         PVN_summa = (produkta_cena + darba_samaksa) * PVN/100
         rekina_summa = produkta_cena + darba_samaksa + PVN_summa
 
+    def saglabat(self, klients, veltijums, izmers, materials):
+        self.klients = klients
+        self.veltijums = veltijums
+        self.izmers = izmers
+        self.materials = materials
+
+        velt_garums = len(veltijums)
+        self.merijumi = [int(i) for i in izmers.split()] 
+
+        darba_samaksa = 15
+        PVN = 21
+        produkta_cena = velt_garums * 1.2 + (self.merijumi[0]/100 * self.merijumi[1]/100 * self.merijumi[2]/100) / 3 * materials 
+        PVN_summa = (produkta_cena + darba_samaksa) * PVN/100
+        rekina_summa = round((produkta_cena + darba_samaksa + PVN_summa), 2)
+
+        izmeri = f"{self.merijumi[-3]}cm x {self.merijumi[-2]}cm x {self.merijumi[-1]}cm"
+
+        saglabajamais = []
+        saglabajamais.append([self.klients, self.veltijums, izmeri, self.materials, rekina_summa])
+
+        with open('kastites.csv', 'a', encoding='utf-8', newline='') as fails:
+            writer = csv.writer(fails)
+            writer.writerows(saglabajamais)
+
     def izdruka(self, izmers, veltijums, materials):
         global rekina_summa 
         self.veltijums = veltijums
@@ -39,7 +63,7 @@ class Rekins:
         PVN = 21
         produkta_cena = velt_garums * 1.2 + (self.merijumi[0]/100 * self.merijumi[1]/100 * self.merijumi[2]/100) / 3 * materials 
         PVN_summa = (produkta_cena + darba_samaksa) * PVN/100
-        rekina_summa = produkta_cena + darba_samaksa + PVN_summa
+        rekina_summa = round((produkta_cena + darba_samaksa + PVN_summa), 2)
 
         print("******************\nRĒĶINS\n******************") 
         print(f"Klients: {self.klients} \nVeltījums: {self.veltijums} \nIzmēri: {self.merijumi[-3]} x {self.merijumi[-2]} x {self.merijumi[-1]} \nMateriāla cena: {self.materials}€ \nApmaksas summa: {rekina_summa}€  \nRēķina izveides laiks: {self.laiks}")
@@ -53,5 +77,5 @@ izmers = input("Izmēri (trīs veseli skaitļi, atdalīti ar atstarpēm):")
 materials = float(input("Materiāla cena (€/cm3):"))
 
 Kastite1 = Rekins(klients, veltijums, izmers, materials)
-
+Kastite1.saglabat(klients, veltijums, izmers, materials)
 Kastite1.izdruka(izmers, veltijums, materials)
