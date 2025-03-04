@@ -26,14 +26,14 @@ class VestulesSuta(ABC):
 class Pastnieks(VestulesSuta):
     def sutit_vestuli(self, vestule):
         print("💌")
-        print(f"Vēstule no: {sutijums.sutitajs.vards} <{sutijums.sanemejs.epasts}>")
-        print(f"Vēstule uz: {sutijums.sanemejs.vards} <{sutijums.sanemejs.epasts}>")
-        print(f'Ziņojums: "{sutijums.saturs}" \n')
+        print(f"Vēstule no: {vestule.sutitajs.vards} <{vestule.sanemejs.epasts}>")
+        print(f"Vēstule uz: {vestule.sanemejs.vards} <{vestule.sanemejs.epasts}>")
+        print(f'Ziņojums: "{vestule.saturs}" \n')
 
     def sanemt_vestuli(self, vestule):
-        print(f"Vēstule saņemta no: {sutijums.sutitajs.vards} <{sutijums.sanemejs.epasts}>")
-        print(f"Vēstule adresēta uz: {sutijums.sanemejs.vards} <{sutijums.sanemejs.epasts}>")
-        print(f'Ziņojums: "{sutijums.saturs}"')
+        print(f"Vēstule saņemta no: {vestule.sutitajs.vards} <{vestule.sanemejs.epasts}>")
+        print(f"Vēstule adresēta uz: {vestule.sanemejs.vards} <{vestule.sanemejs.epasts}>")
+        print(f'Ziņojums: "{vestule.saturs}"')
         print("💌")
 
 janisz = Persona("Jānis Zibens", "zibens.sper@svg.lv")
