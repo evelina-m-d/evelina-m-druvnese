@@ -65,13 +65,13 @@ print("***")
 
 print("Zils objekts:")
 #2.4
-zils1 = Bloks(7, "zila", 5, "23")
+zils5 = Bloks(7, "zila", 5, "23")
 #2.5
-print(f"{zils1.nosaukums}, nederīgs {zils1.derigums}")
+print(f"{zils5.nosaukums}, nederīgs {zils5.derigums}")
 print("***")
 
 #2.6
 print("Mainīta forma:")
-zils1 = Bloks(7, "zila", 5, "12")
-print(f"{zils1.nosaukums}, {zils1.malas_garums} cm, derīgs {zils1.derigums}")
+zils5 = Bloks(7, "zila", 5, "12")
+print(f"{zils5.nosaukums}, {zils5.malas_garums} cm, derīgs {zils5.derigums}")
 print("***")
