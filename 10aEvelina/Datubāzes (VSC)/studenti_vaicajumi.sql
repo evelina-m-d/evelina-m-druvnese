@@ -73,8 +73,8 @@ SELECT * FROM studenti ORDER BY uzvards DESC;
 
 --paradit visus kursus un studentus, kas tajos pierakstiti
 SELECT
-    kursi.nosaukums AS kursa_nosaukums, --parskatamibai maina kolonnas nosaukumu
-    studenti.vards || ' ' || studenti.uzvards AS students --apvieno vardu ar uzvardu
+    kursi.nosaukums AS 'Kursa nosaukums', --parskatamibai maina kolonnas nosaukumu
+    studenti.vards || ' ' || studenti.uzvards AS 'Students' --apvieno vardu ar uzvardu
 FROM kursi
 JOIN studentu_kursi ON kursi.kurss_id = studentu_kursi.kurss_id
 JOIN studenti ON studentu_kursi.students_id = studenti.students_id
@@ -82,8 +82,24 @@ ORDER BY kursi.nosaukums;
 
 --saskaitit cik studentu ir katra kursa
 SELECT
-    kursi.nosaukums AS Kursa_nosaukums,
-    COUNT(studentu_kursi.students_id) AS Studentu_skaits
+    kursi.nosaukums AS 'Kursa nosaukums',
+    COUNT(studentu_kursi.students_id) AS 'Studentu skaits kursā'
 FROM kursi
 LEFT JOIN studentu_kursi ON kursi.kurss_id = studentu_kursi.kurss_id
 GROUP BY kursi.nosaukums;
+
+--katram kursam paradit videjo atzimi un studentu skaitu (kursa nos, atzime, skaits)
+SELECT
+    kursi.nosaukums AS 'Kursa nosaukums',
+    COUNT(students_id) AS 'Studentu skaits kursā',
+    ROUND(AVG(atzimes.atzime)) AS 'Vidējā atzīme kursā'
+FROM kursi JOIN atzimes ON atzimes.kurss_id = kursi.kurss_id
+GROUP BY kursi.nosaukums;
+
+--Paradit katra studenta videjo atzimi
+SELECT
+    studenti.vards || ' ' || studenti.uzvards AS 'Students',
+    ROUND(AVG(atzimes.atzime)) AS 'Vidējā atzīme'
+FROM atzimes 
+JOIN studenti ON atzimes.students_id = studenti.students_id
+GROUP BY studenti.students_id;
