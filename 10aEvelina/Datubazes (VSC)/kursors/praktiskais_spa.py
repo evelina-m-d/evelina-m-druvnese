@@ -31,38 +31,110 @@ cursor.execute("""
     )
 """)
 
-print("--Pievienot klientu")
-vards=input("Ievadi vardu:")
-uzvards=input("Ievadi uzvardu")
-tel_numurs=input("Ievadi telefona nr:")
+'''
+while True:
+    print("--Pievienot klientu")
+    vards=input("Ievadi vardu: ")
+    uzvards=input("Ievadi uzvardu: ")
+    tel_numurs=input("Ievadi telefona nr: ")
 
-cursor.execute("""
-    INSERT INTO klienti(vards,uzvards,tel_numurs) VALUES(?,?,?)""",
-    (vards, uzvards, tel_numurs)
-)
-savienojums.commit()
-print("Klients pievienots!")
+    cursor.execute("""
+        INSERT INTO klienti(vards,uzvards,tel_numurs) VALUES(?,?,?)""",
+        (vards, uzvards, tel_numurs)
+    )
 
-print("--pievienot pakalpojumu")
-nosaukums=input("Ievadi pakalpojuma nosaukumu:")
-cena=input("Ievadi pakalpojuma cenu:")
-ilgums=input("Ievadi pakalpojuma ilgumu:")
+    turpinat=input("Vai vēlaties turpināt pievienot klientus? (j/n)".lower())
+    if turpinat != 'j':
+        savienojums.commit()
+        print("Klients pievienots!")
+        break    
 
-cursor.execute("""
-    INSERT INTO pakalpojumi(nosaukums,cena,ilgums_minutes) VALUES(?,?,?)""",
-    (nosaukums, cena, ilgums)
-)
-savienojums.commit()
+while True:
+    print("--pievienot pakalpojumu")
+    nosaukums=input("Ievadi pakalpojuma nosaukumu:")
+    cena=input("Ievadi pakalpojuma cenu:")
+    ilgums=input("Ievadi pakalpojuma ilgumu:")
 
-print("Pakalpojums pievienots!")
+    cursor.execute("""
+        INSERT INTO pakalpojumi(nosaukums,cena,ilgums_minutes) VALUES(?,?,?)""",
+        (nosaukums, cena, ilgums)
+    )
+    
+    turpinat=input("Vai vēlaties turpināt pievienot pakalpojumus? (j/n)".lower())
+    if turpinat != 'j':
+        savienojums.commit()
+        print("Pakalpojums pievienots!")
+        break'''
 
-print("Pieraksta pievienošana -")
-klients=input("Klienta id:")
-pakalpojums=input("Pakalpojuma id:")
-datums=input("Datums:")
+while True:
+    print("Pieejamie klienti:")
+    cursor.execute("SELECT klienti_id, vards, uzvards FROM klienti")
+    for klients in cursor.fetchall():
+        print(f"ID {klients[0]} - {klients[1]} - {klients[2]}")
+    while True: 
+        try:
+            klients_id=int(input("Ievadi klienta id: "))
+            cursor.execute("SELECT COUNT(*) FROM klienti WHERE klienti_id=?", (klients_id,))
+            if cursor.fetchone()[0]>0:
+                break
+            else:
+                print("Klients ar šādu ID neeksistē!")
+        except ValueError:
+            print("Ievadi skaitli, jo ID ir cipars")
+    
+    
+    print("Pieejamie pakalpojumi")
+    cursor.execute("SELECT pakalpojuma_id, nosaukums, cena FROM pakalpojumi")
+    for p in cursor.fetchall():
+        print(f"ID {p[0]} - {p[1]} {p[2]}€")
+    while True: 
+        try:
+            pakalpojuma_id=int(input("Ievadi pakalpojuma id: "))
+            cursor.execute("SELECT COUNT(*) FROM pakalpojumi WHERE pakalpojuma_id=?", (pakalpojuma_id,))
+            if cursor.fetchone()[0]>0:
+                break
+            else:
+                print("Pakalpojums ar šādu ID neeksistē!")
+        except ValueError:
+            print("Ievadi skaitli, jo ID ir cipars")
 
-cursor.execute("""
-    INSERT INTO pieraksti(klients,pakalpojums,datums) VALUES(?,?,?)""",
-    (klients, pakalpojums, datums)
-)
-savienojums.commit()
+    datums = input("Ievadi pieraksta datumu (YYYY-MM-DD):")
+    cursor.execute("""
+        INSERT INTO pieraksti(klients,pakalpojums,datums) VALUES(?,?,?)""",
+        (klients_id, pakalpojuma_id, datums))
+    savienojums.commit()
+    turpinat=input("Vai pievienosiet vēl pierakstu? (j/n)".lower())
+    if turpinat != "j":
+        break
+'''
+while True:
+    print("Pieraksta pievienošana -")
+    klients=input("Klienta id:")
+    pakalpojums=input("Pakalpojuma id:")
+    datums=input("Datums:")
+
+    cursor.execute("""
+        INSERT INTO pieraksti(klients,pakalpojums,datums) VALUES(?,?,?)""",
+        (klients, pakalpojums, datums)
+    )
+    turpinat=input("Vai vēlaties turpināt pievienot pierakstus? (j/n)".lower())
+    if turpinat != 'j':
+        savienojums.commit()
+        print("Pieraksts pievienots!")
+        break'''
+
+print("Visi klienti:")
+cursor.execute("SELECT * FROM klienti")
+for rinda in cursor.fetchall():
+    print(rinda)
+
+print("Visi pakalpojumi:")
+cursor.execute("SELECT * FROM pakalpojumi")
+for rinda in cursor.fetchall():
+    print(rinda)
+
+print("Visi pieraksti:")
+cursor.execute("SELECT * FROM pieraksti")
+for rinda in cursor.fetchall():
+    print(rinda)
+
