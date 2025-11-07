@@ -31,7 +31,9 @@ cursor.execute("""
     )
 """)
 
-'''
+
+
+
 while True:
     print("--Pievienot klientu")
     vards=input("Ievadi vardu: ")
@@ -49,6 +51,8 @@ while True:
         print("Klients pievienots!")
         break    
 
+
+
 while True:
     print("--pievienot pakalpojumu")
     nosaukums=input("Ievadi pakalpojuma nosaukumu:")
@@ -64,7 +68,9 @@ while True:
     if turpinat != 'j':
         savienojums.commit()
         print("Pakalpojums pievienots!")
-        break'''
+        break
+
+
 
 while True:
     print("Pieejamie klienti:")
@@ -106,23 +112,9 @@ while True:
     turpinat=input("Vai pievienosiet vēl pierakstu? (j/n)".lower())
     if turpinat != "j":
         break
-'''
-while True:
-    print("Pieraksta pievienošana -")
-    klients=input("Klienta id:")
-    pakalpojums=input("Pakalpojuma id:")
-    datums=input("Datums:")
 
-    cursor.execute("""
-        INSERT INTO pieraksti(klients,pakalpojums,datums) VALUES(?,?,?)""",
-        (klients, pakalpojums, datums)
-    )
-    turpinat=input("Vai vēlaties turpināt pievienot pierakstus? (j/n)".lower())
-    if turpinat != 'j':
-        savienojums.commit()
-        print("Pieraksts pievienots!")
-        break'''
 
+    
 print("Visi klienti:")
 cursor.execute("SELECT * FROM klienti")
 for rinda in cursor.fetchall():
