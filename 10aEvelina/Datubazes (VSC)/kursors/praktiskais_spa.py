@@ -1,4 +1,5 @@
 import sqlite3
+import datetime
 savienojums=sqlite3.connect("spa_sistema.db")
 cursor=savienojums.cursor()
 
@@ -31,7 +32,12 @@ cursor.execute("""
     )
 """)
 
-
+def ievade_jn(teksts):
+    while True:
+        atbilde=input(teksts).lower()
+        if atbilde in ["j", "n"]:
+            return atbilde
+        print("Ievadi tikai 'j' vai 'n'!")
 
 
 while True:
@@ -44,31 +50,50 @@ while True:
         INSERT INTO klienti(vards,uzvards,tel_numurs) VALUES(?,?,?)""",
         (vards, uzvards, tel_numurs)
     )
+    savienojums.commit()
 
-    turpinat=input("Vai vēlaties turpināt pievienot klientus? (j/n)".lower())
+    turpinat=ievade_jn("Vai vēlaties turpināt pievienot klientus? (j/n)".lower())
     if turpinat != 'j':
-        savienojums.commit()
         print("Klients pievienots!")
         break    
 
 
 
 while True:
-    print("--pievienot pakalpojumu")
+    print("--Pievienot pakalpojumu")
     nosaukums=input("Ievadi pakalpojuma nosaukumu:")
-    cena=input("Ievadi pakalpojuma cenu:")
-    ilgums=input("Ievadi pakalpojuma ilgumu:")
+
+    while True:
+        try:
+            cena=int(input("Ievadi pakalpojuma cenu:"))
+            if cena > 0:
+                break
+            else:
+                print("Ievadi pozitīvu skaitli!")
+        except ValueError:
+            print("Ievadi skaitli!")
+
+    while True:
+        try:
+            ilgums=int(input("Ievadi pakalpojuma ilgumu:"))
+            if ilgums > 0:
+                break
+            else:
+                print("Ievadi pozitīvu skaitli!")
+        except ValueError:
+            print("Ievadi skaitli!")
 
     cursor.execute("""
         INSERT INTO pakalpojumi(nosaukums,cena,ilgums_minutes) VALUES(?,?,?)""",
         (nosaukums, cena, ilgums)
     )
+    savienojums.commit()
     
-    turpinat=input("Vai vēlaties turpināt pievienot pakalpojumus? (j/n)".lower())
+    turpinat=ievade_jn("Vai vēlaties turpināt pievienot pakalpojumus? (j/n)".lower())
     if turpinat != 'j':
-        savienojums.commit()
         print("Pakalpojums pievienots!")
         break
+
 
 
 
@@ -104,12 +129,22 @@ while True:
         except ValueError:
             print("Ievadi skaitli, jo ID ir cipars")
 
-    datums = input("Ievadi pieraksta datumu (YYYY-MM-DD):")
+    while True:
+        datums_txt=input("Ievadi pieraksta datumu: ")
+        try:
+            datums=datetime.datetime.strptime(datums_txt,"%Y-%m-%d").date()
+            if datums < datetime.datetime.now().date():
+                print("Datums nevar būt pagātnē!")
+            else:
+                break
+        except ValueError:
+            print("Nepareizs formāts! Izmanto YYYY-MM-DD.")
+
     cursor.execute("""
         INSERT INTO pieraksti(klients,pakalpojums,datums) VALUES(?,?,?)""",
         (klients_id, pakalpojuma_id, datums))
     savienojums.commit()
-    turpinat=input("Vai pievienosiet vēl pierakstu? (j/n)".lower())
+    turpinat=ievade_jn("Vai pievienosiet vēl pierakstu? (j/n)".lower())
     if turpinat != "j":
         break
 
