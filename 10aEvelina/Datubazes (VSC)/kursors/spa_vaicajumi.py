@@ -10,6 +10,7 @@
 
 import sqlite3
 import datetime
+import time
 
 savienojums=sqlite3.connect("spa_sistema.db")
 cursor=savienojums.cursor()
@@ -17,37 +18,103 @@ cursor=savienojums.cursor()
 while True:
     print("SPA sistēmas apskates programma\n****************************\n")
     print(" 1 - Apskatīt visus klientus\n 2 - Apskatīt visus pakalpojumus\n 3 - Apskatīt visus pierakstus\n 4 - Apskatīt tuvāko 7 dienu pierakstus\n 5 - Apskatīt pakalpojumus, kas neietilpst jūsu budžetā\n 0 - Aizvērt programmu\n")
-    
-    izvelne=int(input("Izvēlaties vēlamo funkciju:"))
-    if izvelne == 0:
-        break
-    elif izvelne == 1:
-        print("Visi klienti, kas reģistrēti sistēmā:\n")
-        cursor.execute("SELECT * FROM klienti")
-        visi=cursor.fetchall()
-        for i in visi:
-            print(f"ID {i[0]} | Vārds: {i[1]} {i[2]} | Telefona numurs: {i[3]}\n")
-    elif izvelne == 2:
-        print("Visi pakalpojumi, kas reģistrēti sistēmā:\n")
-        cursor.execute("SELECT * FROM pakalpojumi")
-        visi=cursor.fetchall()
-        for i in visi:
-            print(f"ID {i[0]} | Nosaukums: {i[1]} | Cena: {i[2]}€ | Ilgums, minūtēs: {i[3]}\n")
-    elif izvelne == 3:
-        print("Visi pieraksti, kas reģistrēti sistēmā:")
-        cursor.execute("""
-        SELECT 
-            pieraksti.pieraksta_id,
-            klienti.vards,
-            klienti.uzvards,
-            pakalpojumi.nosaukums
-        FROM pieraksti
-        LEFT JOIN klienti ON klienti.klienti_id = pieraksti.klients
-        LEFT JOIN pakalpojumi ON pakalpojumi.pakalpojuma_id = pieraksti.pakalpojums
-        GROUP BY pieraksti.pieraksta_id
-        """)
-        visi=cursor.fetchall()
-        for i in visi:
-            print(f"Pieraksta ID {i[0]} | Klienta vārds: {i[1]} {i[2]} | Pakalpojums: {i[3]}\n")
-    elif izvelne == 4:
-        print("Tuvāko 7 dienu pieraksti:")
+    try:
+        izvelne=int(input("Izvēlaties vēlamo funkciju: "))
+        if izvelne == 0:
+            time.sleep(0.5)
+            print("Paldies, visu labu!")
+            break
+
+        elif izvelne == 1:
+            time.sleep(0.5)
+            print("****************************\nVisi klienti, kas reģistrēti sistēmā:\n")
+            cursor.execute("SELECT * FROM klienti")
+            visi=cursor.fetchall()
+            for i in visi:
+                print(f"ID {i[0]} | Vārds: {i[1]} {i[2]} | Telefona numurs: {i[3]}\n")
+
+        elif izvelne == 2:
+            time.sleep(0.5)
+            print("****************************\nVisi pakalpojumi, kas reģistrēti sistēmā:\n")
+            cursor.execute("SELECT * FROM pakalpojumi")
+            visi=cursor.fetchall()
+            for i in visi:
+                print(f"ID {i[0]} | Nosaukums: {i[1]} | Cena: {i[2]}€ | Ilgums, minūtēs: {i[3]}\n")
+
+        elif izvelne == 3:
+            time.sleep(0.5)
+            print("****************************\nVisi pieraksti, kas reģistrēti sistēmā:")
+            cursor.execute("""
+            SELECT 
+                pieraksti.pieraksta_id,
+                klienti.vards,
+                klienti.uzvards,
+                pakalpojumi.nosaukums,
+                pieraksti.datums
+            FROM pieraksti
+            LEFT JOIN klienti ON klienti.klienti_id = pieraksti.klients
+            LEFT JOIN pakalpojumi ON pakalpojumi.pakalpojuma_id = pieraksti.pakalpojums
+            GROUP BY pieraksti.pieraksta_id
+            """)
+            visi=cursor.fetchall()
+            for i in visi:
+                print(f"Pieraksta ID {i[0]} | Klienta vārds: {i[1]} {i[2]} | Pakalpojums: {i[3]} | Datums: {i[4]}\n")
+
+        elif izvelne == 4:
+            time.sleep(0.5)
+            print("****************************\nTuvāko 7 dienu pieraksti:\n")
+            cursor.execute("""
+            SELECT
+                pieraksti.pieraksta_id,
+                klienti.vards,
+                klienti.uzvards,
+                pakalpojumi.nosaukums,
+                pieraksti.datums
+            FROM pieraksti
+            LEFT JOIN klienti ON klienti.klienti_id = pieraksti.klients
+            LEFT JOIN pakalpojumi ON pakalpojumi.pakalpojuma_id = pieraksti.pakalpojums
+            GROUP BY pieraksti.pieraksta_id
+            """)
+            for tuple in cursor.fetchall():
+                datums_txt = tuple[4]
+                datums = datetime.datetime.strptime(datums_txt,"%Y-%m-%d").date()
+                sodiena = datetime.datetime.now().date()
+                datums_pec_sept = sodiena + datetime.timedelta(days=7)
+                if datums > sodiena and datums < datums_pec_sept:
+                    print(f"Pieraksta ID {tuple[0]} | Klienta vārds: {tuple[1]} {tuple[2]} | Pakalpojums: {tuple[3]} | Datums: {tuple[4]}\n")
+        
+        elif izvelne == 5:
+            while True:
+                try:
+                    time.sleep(0.5)
+                    liet_cena = float(input("\n****************************\nIevadiet savu budžetu: "))
+                    time.sleep(0.5)
+                    if liet_cena > 0:
+                        print("Visi pakalpojumi, kas ir ārpus jūsu budžeta: \n")
+                        cursor.execute("SELECT * FROM pakalpojumi")
+                        visi=cursor.fetchall()
+                        pakalpojumu_skaits = 0
+                        for i in visi:
+                            cena = i[2]
+                            if cena > liet_cena:
+                                print(f"Pakalpojums: {i[1]} | Cena: {i[2]}€\n")
+                                pakalpojumu_skaits += 1
+                            else:
+                                pass
+                        if pakalpojumu_skaits < 1:
+                            print("Neviens pakalpojums nav ārpus jūsu budžeta!\n")
+                            break
+                        else:
+                            pass
+                            break
+                    else:
+                        raise ValueError
+                except ValueError:
+                    print("Ievadiet pozitīvu skaitli!")
+        
+        else:
+            raise ValueError
+
+    except ValueError:
+        print("\n****************************\nIevadiet skaitli no 0 līdz 5!\n****************************\n")
+                        
