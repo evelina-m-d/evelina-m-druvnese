@@ -302,9 +302,9 @@ def sutijumu_skaits(): #apskatīt šo vaicājumu
     SELECT
         klienti.vards,
         COALESCE(COUNT(sutijumi.sutijuma_id), 0) 
-    FROM sutijumi
-    LEFT JOIN klienti ON klienti.klienta_id = sutijumi.klienta_id
-    GROUP BY klienti.vards
+    FROM klienti
+    LEFT JOIN sutijumi ON klienti.klienta_id = sutijumi.klienta_id
+    GROUP BY klienti.klienta_id
     """)
     for i in cursor.fetchall():
         print(f"Vārds: {i[0]} | Sūtījumu skaits: {i[1]}")
