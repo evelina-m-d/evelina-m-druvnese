@@ -151,7 +151,7 @@ def main(page:ft.Page):
 
     def saglabat_iznemtu(_):
         if dd_gramata.value is None or dd_lasitajs.value is None or datums.value=="": #ja kaut kas ir tukss, nelauj pievienot datubazei
-            statuss3.value="Kļuda! Aizpildi visus laukus!"
+            statuss3.value="Kļūda! Aizpildi visus laukus!"
             statuss3.color="red"
         else:
             gramatas_id = dd_gramata.value.strip()
@@ -197,10 +197,8 @@ def main(page:ft.Page):
         statuss2,
         poga_lasitaji,
         
-        dd_gramata,
-        dd_lasitajs,
-        datums,
-        cb_atdots,
+        iznemtasgramatas_teksts,
+        dd_gramata,dd_lasitajs,datums,cb_atdots,
         statuss3,
         poga_iznemta
     )    
